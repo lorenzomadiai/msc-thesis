@@ -1,0 +1,53 @@
+absl-py==2.1.0
+astor==0.8.1
+cffi==1.15.1
+cloudpickle==1.2.2
+cycler==0.11.0
+Cython==0.29.37
+fasteners==0.20
+future==1.0.0
+gast==0.7.0
+glfw==2.10.0
+grpcio==1.62.3
+gym==0.15.7
+h5py==3.8.0
+imageio==2.31.2
+importlib-metadata==6.7.0
+joblib==0.14.0
+Keras-Applications==1.0.8
+Keras-Preprocessing==1.1.2
+kiwisolver==1.4.5
+Markdown==3.4.4
+MarkupSafe==2.1.5
+matplotlib==3.1.1
+mock==5.2.0
+mpi4py @ file:///home/conda/feedstock_root/build_artifacts/mpi4py_1660326262210/work
+mujoco-py==2.0.2.10
+numpy==1.17.5
+nvidia-cublas-cu11==11.10.3.66
+nvidia-cuda-nvrtc-cu11==11.7.99
+nvidia-cuda-runtime-cu11==11.7.99
+nvidia-cudnn-cu11==8.5.0.96
+pandas==1.3.5
+Pillow==9.5.0
+protobuf==3.20.3
+pycparser==2.21
+pyglet==1.5.0
+pyparsing==3.1.4
+python-dateutil==2.9.0.post0
+pytz==2025.2
+-e git+https://github.com/openai/safety-gym.git@f31042f2f9ee61b9034dd6a416955972911544f5#egg=safety_gym
+scipy @ file:///opt/conda/conda-bld/scipy_1661390393401/work
+seaborn==0.8.1
+six==1.17.0
+tensorboard==1.13.1
+tensorflow==1.13.1
+tensorflow-estimator==1.13.0
+termcolor==2.3.0
+torch==1.13.1
+tqdm==4.67.1
+typing_extensions==4.7.1
+-e git+https://gitlab.tsn.tno.nl/madiail/riskawareRL.git@045ca2579c922bd3fca045a2a7f59d2dbda6c2da#egg=wc_sac&subdirectory=thesis_project/WCSAC
+Werkzeug==2.2.3
+xmltodict==0.12.0
+zipp==3.15.0

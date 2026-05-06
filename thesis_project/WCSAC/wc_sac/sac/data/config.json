@@ -1,0 +1,58 @@
+{
+    "ac_kwargs":	{
+        "hidden_sizes":	[
+            256,
+            256
+        ]
+    },
+    "actor_fn":	"mlp_actor",
+    "batch_size":	256,
+    "budget_max":	220,
+    "budget_min":	120,
+    "cl":	0.5,
+    "cost_constraint":	null,
+    "cost_lim":	25.0,
+    "critic_fn":	"mlp_critic",
+    "damp_scale":	10,
+    "deadline_penalty":	1,
+    "entropy_constraint":	-1,
+    "env_fn":	"<function <lambda> at 0x000002AD71C98EE8>",
+    "epochs":	100,
+    "fixed_cost_penalty":	null,
+    "fixed_entropy_bonus":	null,
+    "gamma":	0.99,
+    "local_start_steps":	500,
+    "local_update_after":	500,
+    "logger":	{
+        "<wc_sac.utils.logx.EpochLogger object at 0x000002AD71C9CF88>":	{
+            "epoch_dict":	{},
+            "exp_name":	null,
+            "first_row":	true,
+            "log_current_row":	{},
+            "log_headers":	[],
+            "output_dir":	"./data",
+            "output_file":	{
+                "<_io.TextIOWrapper name='./data\\\\progress.txt' mode='w' encoding='cp1252'>":	{
+                    "mode":	"w"
+                }
+            }
+        }
+    },
+    "logger_kwargs":	{
+        "output_dir":	"./data"
+    },
+    "lr":	0.001,
+    "lr_scale":	50,
+    "max_ep_len":	1000,
+    "pdf_cdf":	0.7978845608028654,
+    "polyak":	0.995,
+    "render":	false,
+    "replay_size":	1000000,
+    "reward_scale":	1,
+    "save_freq":	15,
+    "seed":	0,
+    "steps_per_epoch":	30000,
+    "update_freq":	100,
+    "use_costs":	25.0,
+    "var_fn":	"mlp_var"
+}

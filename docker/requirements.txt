@@ -1,0 +1,9 @@
+opencv-python
+numpy
+torch==1.13.1
+jupyter
+tqdm
+ipdb
+hydra-core
+scikit-learn
+pandas

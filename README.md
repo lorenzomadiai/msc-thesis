@@ -87,8 +87,8 @@ The results show that:
 
 The work relies on two key external repositories:
 
-- **WCSAC**, for the conservative side and as a SafeRL reference;
-- **Safety Gym**, for the experimental environment and navigation tasks with safety constraints.
+- **WCSAC**, for the conservative side and as a SafeRL reference (https://github.com/AlgTUDelft/WCSAC);
+- **Safety Gym**, for the experimental environment and navigation tasks with safety constraints (https://github.com/openai/safety-gym).
 
 ## Technologies
 

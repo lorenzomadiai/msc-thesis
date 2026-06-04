@@ -89,19 +89,33 @@ The work relies on two key external repositories:
 
 - **WCSAC**, for the conservative side and as a SafeRL reference (https://github.com/AlgTUDelft/WCSAC);
 - **Safety Gym**, for the experimental environment and navigation tasks with safety constraints (https://github.com/openai/safety-gym).
+- The work relies on two key external repositories:
 
-## Technologies
+- **WCSAC**, used as a Safe RL reference implementation and as the basis for the conservative training component: https://github.com/AlgTUDelft/WCSAC.
+- **Safety Gym**, used to define the experimental navigation environments with safety constraints: https://github.com/openai/safety-gym.
 
-- Python
-- PyTorch
-- OpenAI Safety Gym
-- MuJoCo
-- Reinforcement Learning
-- Safe Reinforcement Learning
-- CVaR optimization
+> **Note on Safety Gym installation.**  
+> Safety Gym depends on `mujoco-py` and requires MuJoCo 2.0 to be installed separately. On Windows, the MuJoCo binaries should be placed in:
+>
+> ```text
+> C:\Users\<USER>\.mujoco\mujoco200
+> ```
+>
+> and the following path must be available in `PATH`:
+>
+> ```text
+> C:\Users\<USER>\.mujoco\mujoco200\bin
+> ```
+>The repository includes a local copy of Safety Gym. To avoid dependency conflicts with the MuJoCo version required by this project, we recommend removing the explicit `mujoco-py` dependency from `safety-gym/setup.py` before installation.
+
+Specifically, remove:
+
+```python
+"mujoco_py==2.0.2.7"
+
 
 ## Thesis Title
 
-**Learning When to Switch: Adaptive Risk-Aware Reinforcement Learning under Time Constraints**
+**Learning When to Switch: Adapting Risk Attitude to Reach a Goal Under Time Constraints**
 
 Leiden University — MSc Computer Science (Artificial Intelligence).

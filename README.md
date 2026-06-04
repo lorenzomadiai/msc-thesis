@@ -87,12 +87,10 @@ The results show that:
 
 The work relies on two key external repositories:
 
-- **WCSAC**, for the conservative side and as a SafeRL reference (https://github.com/AlgTUDelft/WCSAC);
-- **Safety Gym**, for the experimental environment and navigation tasks with safety constraints (https://github.com/openai/safety-gym).
 - The work relies on two key external repositories:
 
-- **WCSAC**, used as a Safe RL reference implementation and as the basis for the conservative training component: https://github.com/AlgTUDelft/WCSAC.
-- **Safety Gym**, used to define the experimental navigation environments with safety constraints: https://github.com/openai/safety-gym.
+- **WCSAC**, used as a Safe RL reference implementation and used to train the risk-aware or conservative policy: https://github.com/AlgTUDelft/WCSAC.
+- **Safety Gym**, used to define the experimental navigation environments with safety and time constraints: https://github.com/openai/safety-gym.
 
 > **Note on Safety Gym installation.**  
 > Safety Gym depends on `mujoco-py` and requires MuJoCo 2.0 to be installed separately. On Windows, the MuJoCo binaries should be placed in:

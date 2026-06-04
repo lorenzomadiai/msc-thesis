@@ -110,8 +110,7 @@ Specifically, remove:
 
 ```python
 "mujoco_py==2.0.2.7"
-
-
+```
 ## Thesis Title
 
 **Learning When to Switch: Adapting Risk Attitude to Reach a Goal Under Time Constraints**

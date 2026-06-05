@@ -5,7 +5,7 @@ Plot success rate and CVaR versus fixed time budget from eval_exp3_budget_sweep.
 The input CSV is expected to contain at least:
   - budget
   - success
-  - cost_total (or cost_cum_<budget> columns)
+  - cost_total
 Optionally:
   - agent
 
@@ -14,10 +14,10 @@ For each (agent, budget) group, this script computes:
   - cvar_cost_alpha = mean of worst ceil(alpha * N) episode costs
 
 Usage example:
-  python src/analysis/EXP3/plot_success_cvar_by_budget.py \
-      --csv thesis_project/results/EXP3/run5_2000ep_obs_lidar/fixedbudget_sweep.csv \
-      --out_dir thesis_project/plots/EXP3/run5_2000ep_obs_lidar \
-      --alpha 0.1
+  python .../plot_results_over_timebudgets.py \
+      --csv .../fixedbudget_sweep.csv \
+      --out_dir ... \
+      --alpha 0.1 -> CVaR computed over worst 10% episodes by cost
 """
 
 import argparse

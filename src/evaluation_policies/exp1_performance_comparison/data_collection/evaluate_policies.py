@@ -1,23 +1,33 @@
 #!/usr/bin/env python3
 """
-eval_with_training_settings.py
+evaluate_policies.py
 
-Evaluates one or more time-aware agents under the SAME distribution used
-during training:
-  - Robot position is randomly initialised (no fixed placement area).
-  - Time budget B is sampled at each episode reset by the wrapper from
-    {budget_min, budget_min+5, ..., budget_max}, matching wcsac_timeaware.py.
-  - All agents share the same episode seeds for a fair comparison.
-  - All results are written to a single CSV, identified by the "agent" column.
+Evaluate one or more policies under the same time-budget distribution used during
+training.
 
-Training hyperparameters (from wcsac_timeaware.py / wrappers.py):
-  budget_min = 140, budget_max = 260, budget_step = 5
+This script is used in the thesis to collect the main evaluation data for the
+policy comparison experiment. Each policy is tested on the same sequence of
+episode seeds and sampled time budgets, so differences in performance are due to
+the policies themselves rather than to different initial conditions or different
+mission deadlines.
 
-Example (multi-agent):
-  python eval_with_training_settings.py \\
-      --agent_dirs /path/to/agent1 /path/to/agent2 /path/to/agent3 \\
-      --agent_names agent1 agent2 agent3 \\
-      --episodes 1000 --results_dir results/
+The script can evaluate two types of agents:
+
+1. Standard low-level policies
+   These are loaded from SavedModel directories passed through --agent_dirs.
+   Each policy acts directly in the time-aware Safety Gym environment.
+
+2. The proposed hierarchical switching method
+   This can be evaluated by providing:
+       --switch_classifier_ckpt
+       --switch_cons_dir
+       --switch_agg_dir
+
+   In this mode, the script builds a MetaEnv in which the classifier acts as a
+   high-level controller. At each decision step, the classifier decides whether to
+   continue with the conservative policy or switch irreversibly to the aggressive
+   policy. This corresponds to the hierarchical policy-switching method proposed
+   in the thesis.
 """
 import os
 import csv

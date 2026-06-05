@@ -1,6 +1,28 @@
 #!/usr/bin/env python3
-"""Filter evaluation CSV rows by budget quantile interval."""
+"""
+This script is mainly used to isolate the high-budget regime before computing
+risk-sensitive metrics such as CVaR. Therefore, this
+script creates the filtered CSV used by the downstream analysis scripts to compute
+CVaR on that specific subset of episodes. The CVaR analysis is performed in policy_cvar_analysis.py. 
+The script assumes that the input CSV already contains only episodes belonging to the high-budget
+regime, obtained through this filtering step. Multiple CSV files can be provided simultaneously, 
+allowing the script to aggregate results across different seeds and compute the corresponding mean and uncertainty estimates (standard deviation or standard error).
 
+The filtering is based on quantiles of the `budget` column. For example:
+
+    --q_low 0.75 --q_high 1.0
+
+keeps only the upper quartile of the sampled budget distribution, which
+corresponds to the high-budget regime used for the risk-bound evaluation.
+
+Input:
+    A CSV produced by evaluate_policies.py, containing one row per episode and
+    at least a `budget` column.
+
+Output:
+    A filtered CSV containing only the rows whose budget falls inside the
+    selected quantile interval.
+"""
 import argparse
 import csv
 import os
@@ -12,7 +34,7 @@ import numpy as np
 def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(
         description=(
-            "Filter an evaluation CSV (like traindist_timeaware_*.csv) so that only "
+            "Filter an evaluation CSV so that only "
             "episodes whose sampled budget falls inside a quantile-defined interval "
             "are kept. Quantiles are computed over the `budget` column present in the "
             "input file."

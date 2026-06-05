@@ -1,24 +1,52 @@
 #!/usr/bin/env python3
 """
-eval_exp1_budget_sweep.py
+evaluate_policies_budget_sweep.py
 
-Evaluates one or more time-aware agents over the SAME seeded episodes while
-sweeping a FIXED time budget from budget_max down to budget_min.
+Evaluate policies under a systematic sweep of fixed time budgets.
 
-Key behavior:
-  - Episode seeds are generated once and reused for all agents and all budgets.
-  - For a given sweep budget B, every episode in that pass uses exactly B.
-  - Budgets are evaluated in descending order: B_max, B_max-step, ..., B_min.
-  - Optional policy-switching agent is evaluated through MetaEnv.
-  - All results are written to one CSV and identified by (agent, budget, episode_idx).
+Unlike evaluate_policies.py, which evaluates agents under the full training
+distribution of randomly sampled budgets, this script evaluates the same set of
+episodes repeatedly while fixing the available time budget to a predefined value.
+The procedure is repeated for all budgets in the interval
 
-Example:
-  python eval_exp1_budget_sweep.py \
-      --agent_dirs /path/to/agent1 /path/to/agent2 \
-      --agent_names agent1 agent2 \
-      --episodes 1000 \
-      --budget_min 120 --budget_max 220 --budget_step 5 \
-      --results_dir results/
+    budget_max, budget_max - step, ..., budget_min
+
+allowing the effect of temporal pressure on performance and risk to be analysed
+explicitly.
+
+This script is used in Experiment 2 of the thesis, where the objective is to
+study how different policies behave as the available mission time changes. By
+evaluating the same episode seeds under different fixed budgets, the experiment
+isolates the effect of the time budget from the randomness of the environment.
+
+The script can evaluate three types of agents:
+
+1. Standard policies
+   Policies loaded directly from SavedModel directories and executed in the
+   time-aware environment.
+
+2. Hierarchical switching controller (proposed method)
+   Enabled through:
+
+       --switch_classifier_ckpt
+       --switch_cons_dir
+       --switch_agg_dir
+
+   In this configuration, a classifier acts as a high-level controller that
+   decides when to switch from the conservative policy to the aggressive policy.
+   The decision is taken online based on the current state and remaining budget.
+   This corresponds to the main hierarchical method proposed in the thesis.
+
+3. Oracle switching controller
+   Enabled through:
+
+       --oracle_cons_dir
+       --oracle_agg_dir
+
+   The oracle has access to a posteriori information and computes the optimal
+   switching timestep for each episode. It is used as an upper-bound reference
+   to quantify how close the learned switching controller is to the best
+   achievable switching behaviour.
 """
 
 import os

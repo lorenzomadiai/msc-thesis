@@ -34,7 +34,6 @@ from utils import (
     load_episode_pool_csv,
     collect_dataset,
     evaluate_gap_policy,
-    evaluate_fixed_policy,
     train_classifier,
 )
 
@@ -436,20 +435,6 @@ def main():
         switch_prob_threshold=args.switch_prob_threshold,
         feature_history=feature_history,
     )
-    # eval_cons = evaluate_fixed_policy(
-    #     env,
-    #     eval_seeds,
-    #     eval_budgets,
-    #     max_horizon,
-    #     action_mode="conservative",
-    # )
-    # eval_agg = evaluate_fixed_policy(
-    #     env,
-    #     eval_seeds,
-    #     eval_budgets,
-    #     max_horizon,
-    #     action_mode="aggressive",
-    # )
 
     print("\n=== Evaluation Summary ===")
     print(
@@ -457,14 +442,6 @@ def main():
         f"cvar10={eval_gap['cvar_10']:.3f}  sw%={eval_gap['frac_switched']:.2f}  "
         f"sw_step={eval_gap['mean_switch_step']:.1f}"
     )
-    # print(
-    #     f"  Conservative:  succ={eval_cons['success_rate']:.3f}  cost={eval_cons['mean_cost']:.3f}  "
-    #     f"cvar10={eval_cons['cvar_10']:.3f}"
-    # )
-    # print(
-    #     f"  Aggressive:    succ={eval_agg['success_rate']:.3f}  cost={eval_agg['mean_cost']:.3f}  "
-    #     f"cvar10={eval_agg['cvar_10']:.3f}"
-    # )
 
     eval_out = {
         "supervised_test": {

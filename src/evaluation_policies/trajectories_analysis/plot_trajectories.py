@@ -2,9 +2,7 @@
 from __future__ import annotations
 
 """
-plot_trajectories.py
-
-Plots robot trajectories from the CSV produced by eval_exp2_trajectories.py.
+Plots agents trajectories from the CSV produced by collect_policies_trajectories.py.
 
 Three plot types are available (choose with --mode):
 

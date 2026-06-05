@@ -2,10 +2,7 @@
 from __future__ import annotations
 
 """
-eval_exp2_trajectories.py
-
-Like eval_exp2_quantiles.py, but instead of per-episode aggregate stats it
-stores the full (x, y) trajectory of the robot at every timestep.
+This script stores the full (x, y) trajectory of the robot at every timestep.
 
 The resulting CSV has one row **per step** (not per episode), with columns:
     agent, budget, episode_idx, seed, step,
@@ -15,11 +12,11 @@ The resulting CSV has one row **per step** (not per episode), with columns:
     cost_cumulative,  # running cumulative cost within the episode
     goal_met,         # 1 if goal was reached on this step, else 0
 
-This lets you reconstruct and plot every trajectory per agent/episode and
+This lets us reconstruct and plot every trajectory per agent/episode and
 visually compare who keeps further away from the hazard.
 
 Example usage:
-  python eval_exp2_trajectories.py \\
+  python collect_policies_trajectories.py \\
       --agent_dirs /path/to/agent1 /path/to/agent2 \\
       --agent_names agent1 agent2 \\
       --quantile_low 0.0 --quantile_high 1.0 \\

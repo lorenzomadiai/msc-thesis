@@ -24,7 +24,7 @@ Outputs (in --results_dir):
 
 Usage
 -----
-python src/training/switching_policies/evaluate_oracle_switch.py \\
+python src/training/switching_policies/evaluate_oracle_switch_policy.py \\
     --cons_dir  WCSAC/.../simple_save6 \\
     --agg_dir   WCSAC/.../simple_save9 \\
     --episodes  200 \\

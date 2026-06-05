@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-evaluate_classifier_quality.py
+evaluate_switch_classifier_quality.py
 ------------------------------
 Evaluate classification/probability quality of a trained switch classifier.
 

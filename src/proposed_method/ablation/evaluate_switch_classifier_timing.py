@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-evaluate_switch_k_from_pool.py
+evaluate_switch_classifier_timing.py
 ------------------------------
 Sample episodes from a pre-built pool and compare predicted switch timing
 (k_pred) against oracle best_k saved in the pool, for multiple switch

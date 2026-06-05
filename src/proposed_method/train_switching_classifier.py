@@ -1,8 +1,130 @@
-#!/usr/bin/env python3
 """
-train_gap_switch.py
+train_switching_classifier.py
+
+Train the hierarchical switching controller proposed in the thesis.
+
+This script implements the supervised learning stage of the proposed method.
+Its objective is to learn a high-level switching policy that decides when it is
+beneficial to switch from a conservative policy to an aggressive policy during
+task execution.
+
+The training procedure is based on an offline episode pool previously generated
+with build_episode_pool.py. For each episode, an oracle computes the expected
+advantage of switching at different decision timesteps. This advantage is
+defined as:
+
+    delta(k) = Return_switch(k) - Return_wait(k)
+
+where:
+
+    Return_switch(k)
+        Expected return obtained by switching to the aggressive policy at
+        decision step k.
+
+    Return_wait(k)
+        Expected return obtained by continuing with the conservative policy.
+
+The oracle therefore provides a binary supervision signal:
+
+    delta(k) > 0   -> switching is better
+    delta(k) <= 0  -> waiting is better
+
+The learning problem is formulated as a supervised binary classification task.
+A neural network receives a compact representation of the current state and
+predicts the probability that switching is preferable to waiting.
+
+The resulting classifier becomes the high-level controller of the hierarchical
+architecture proposed in the thesis.
+
+Hierarchical architecture:
+
+    Classifier
+         |
+         v
+    switch ? 
+         |
+         v
+               -------NO---------> Conservative policy
+         ---->|
+               ------ YES -------> Aggressive policy
+
+The switch is irreversible. Once the classifier decides to switch, the agent
+continues using the aggressive policy until the end of the episode.
+
+Training pipeline:
+
+    build_episode_pool.py
+            ↓
+    train_switching_classifier.py
+            ↓
+    we obtain the meta-controller switching_model.pt
+            ↓
+    evaluate_policies.py and evaluate_policies_budget_sweep.py
+    
+
+Dataset generation
+------------------
+
+The script automatically constructs a supervised dataset from the episode pool.
+
+For each sampled state it computes:
+
+    - feature vector extracted from the raw observation (e.g. lidar, velocimeter, time and budget features)
+    - binary label (delta > 0)
+
+Several sampling strategies are available:
+
+    all
+        Use all decision timesteps from each episode.
+
+    uniform
+        Uniformly sample a scpecific number of decision timesteps from each episode.
+
+
+The resulting dataset is split into:
+
+    - training set
+    - validation set
+    - test set
+
+Classifier training
 -------------------
-Supervised binary classification for switch timing using oracle gap sign.
+
+The classifier is trained using binary cross-entropy loss and early stopping.
+The output represents:
+
+    P(switch is better than waiting)
+
+During deployment the decision rule is:
+
+    switch if P(switch) > threshold
+
+where the threshold is controlled through:
+
+    --switch_prob_threshold
+
+Outputs
+-------
+
+The script produces:
+
+    switching_model.pt
+        Trained switching classifier.
+
+    config.json
+        Full training configuration.
+
+    dataset_summary.json
+        Dataset statistics.
+
+    train_history.csv
+        Training and validation learning curves.
+
+    eval_results.json
+        Final evaluation of the learned switching controller.
+
+This script is the core learning component of the proposed hierarchical
+risk-aware policy adaptation framework.
 """
 
 import os
@@ -450,8 +572,6 @@ def main():
             "n_test": int(len(X_test)),
         },
         "gap_policy": eval_gap,
-        # "conservative": eval_cons,
-        # "aggressive": eval_agg,
 
     }
 
@@ -504,10 +624,10 @@ def main():
     with open(os.path.join(args.results_dir, "config.json"), "w") as f:
         json.dump(config, f, indent=2)
 
-    torch.save(model.state_dict(), os.path.join(args.results_dir, "gap_model.pt"))
+    torch.save(model.state_dict(), os.path.join(args.results_dir, "switching_model.pt"))
 
     print("\nSaved:")
-    print(f"  {os.path.join(args.results_dir, 'gap_model.pt')}")
+    print(f"  {os.path.join(args.results_dir, 'switching_model.pt')}")
     print(f"  {os.path.join(args.results_dir, 'config.json')}")
     print(f"  {os.path.join(args.results_dir, 'dataset_summary.json')}")
     print(f"  {os.path.join(args.results_dir, 'sampling_episode_log.csv')}")

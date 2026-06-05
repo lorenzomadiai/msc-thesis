@@ -2,7 +2,7 @@
 MetaEnv
 -------
 A gym-compatible wrapper that turns the Safety-Gym Engine into a meta-level
-environment for the PPO switching policy.
+environment for the switching policy.
 
 At each *meta-step* the policy chooses between two pre-trained, frozen
 low-level policies (0 = conservative, 1 = aggressive) and that policy is
@@ -10,7 +10,7 @@ executed for `meta_interval` consecutive environment steps (or fewer if the
 episode ends earlier).
 
 Observation returned to the meta-policy (lidar + velocimeter + time features):
-    [goal_lidar (16), hazards_lidar (16), velocimeter (3), time_left_norm, budget_norm, is_aggressive]
+    [goal_lidar (16), hazards_lidar (16), velocimeter (3), time_left_norm, budget_norm]
 
     goal_lidar / hazards_lidar  spatial proximity signals for navigation/safety
     velocimeter (3)             body-frame linear velocity — signals how fast
@@ -18,8 +18,6 @@ Observation returned to the meta-policy (lidar + velocimeter + time features):
                                 the remaining budget will be enough
     time_left_norm  ∈ [-1, 1]   2*remaining/B - 1
     budget_norm     ∈ [ 0, 1]   B / max_budget
-    is_aggressive   ∈ {0, 1}    1 once the irreversible switch has fired (0 always
-                                 in the default reversible mode)
 
 Irreversible-switch mode (irreversible_switch=True):
     The meta-policy can only switch ONCE per episode from conservative to
@@ -33,8 +31,7 @@ NOTE on observations:
   - Low-level act_fns receive the FULL augmented obs [raw_obs | time_left_norm | budget_norm]
     because they need all proprioceptive sensors (accelerometer, velocimeter, gyro,
     magnetometer) for locomotion control.
-  - The meta-policy receives [lidar_obs | velocimeter (3) | time_left_norm | budget_norm]
-    (dim=37 reversible, dim=38 irreversible). The velocimeter is included because
+  - The meta-policy receives [lidar_obs | velocimeter (3) | time_left_norm | budget_norm]. The velocimeter is included because
     knowing the agent's speed helps estimate whether the remaining budget suffices
     with the conservative policy; gyro, accelerometer and magnetometer are excluded
     as they are irrelevant to the switching decision.
@@ -45,9 +42,6 @@ Meta-reward (simple three-term design):
              - deadline_penalty             sparse: penalty when budget expires
                                                     without reaching the goal
 
-NOTE: raw env rewards (r_env) are intentionally NOT accumulated. The
-meta-policy controls strategy (which low-level to run), not locomotion,
-so dense env shaping would add noise and double-count the goal signal.
 """
 
 import numpy as np
@@ -86,8 +80,6 @@ class MetaEnv(gym.Env):
     render : bool
         Whether to call env.render() at each env step.
     """
-
-    metadata = {"render.modes": ["human"]}
 
     def __init__(
         self,
@@ -283,12 +275,6 @@ class MetaEnv(gym.Env):
             # Raw env reward intentionally ignored at the meta level
             cum_cost += float(info.get("cost", 0.0))
 
-            if self._render:
-                try:
-                    self._env.render()
-                except Exception:
-                    pass
-
             if bool(info.get("goal_met", False)) and not self._goal_met:
                 self._goal_met = True
                 goal_met_this_step = True
@@ -328,9 +314,6 @@ class MetaEnv(gym.Env):
                 "n_steps_taken": n_steps_taken,
             },
         )
-
-    def render(self, mode="human"):
-        return self._env.render()
 
     def close(self):
         try:

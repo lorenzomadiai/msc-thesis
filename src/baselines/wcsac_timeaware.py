@@ -17,7 +17,7 @@ from gym.envs.registration import register, registry
 from scipy.stats import norm
 
 
-from wrappers import TimeBudgetWrapper
+from utils.wrappers import TimeBudgetWrapper
 import sys
 EPS = 1e-8
 

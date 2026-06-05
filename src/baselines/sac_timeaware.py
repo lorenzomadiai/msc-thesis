@@ -13,7 +13,7 @@ from safety_gym.envs.engine import Engine
 from gym.envs.registration import register, registry
 
 # === ADDED ===
-from wrappers import TimeBudgetWrapper
+from utils.wrappers import TimeBudgetWrapper
 
 EPS = 1e-8
 

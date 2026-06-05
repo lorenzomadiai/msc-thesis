@@ -21,7 +21,6 @@ Markdown==3.4.4
 MarkupSafe==2.1.5
 matplotlib==3.1.1
 mock==5.2.0
-mpi4py @ file:///home/conda/feedstock_root/build_artifacts/mpi4py_1660326262210/work
 mujoco-py==2.0.2.10
 numpy==1.17.5
 nvidia-cublas-cu11==11.10.3.66
@@ -36,8 +35,6 @@ pyglet==1.5.0
 pyparsing==3.1.4
 python-dateutil==2.9.0.post0
 pytz==2025.2
--e git+https://github.com/openai/safety-gym.git@f31042f2f9ee61b9034dd6a416955972911544f5#egg=safety_gym
-scipy @ file:///opt/conda/conda-bld/scipy_1661390393401/work
 seaborn==0.8.1
 six==1.17.0
 tensorboard==1.13.1
@@ -47,7 +44,6 @@ termcolor==2.3.0
 torch==1.13.1
 tqdm==4.67.1
 typing_extensions==4.7.1
--e git+https://gitlab.tsn.tno.nl/madiail/riskawareRL.git@045ca2579c922bd3fca045a2a7f59d2dbda6c2da#egg=wc_sac&subdirectory=thesis_project/WCSAC
 Werkzeug==2.2.3
 xmltodict==0.12.0
 zipp==3.15.0

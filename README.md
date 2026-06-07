@@ -496,8 +496,7 @@ python .\sac_timeaware.py `
   --lr 0.001 `
   --lambda 0.0 `
   --seed 0 `
-  --cpu 4 `
-  --logger_kwargs_str '{"output_dir":"../../models/aggressive_policy_retrained"}'
+  --cpu 1 `
 ```
 
 ### Flat Policy
@@ -529,8 +528,7 @@ python .\sac_timeaware.py `
   --lr 0.001 `
   --lambda 0.02 `
   --seed 0 `
-  --cpu 4 `
-  --logger_kwargs_str '{"output_dir":"../../models/flat_policy_retrained"}'
+  --cpu 1
 ```
 
 ### Conservative Policy
@@ -555,8 +553,7 @@ python .\wcsac_timeaware.py `
   --lr_s 50 `
   --damp_s 10 `
   --seed 0 `
-  --cpu 4 `
-  --logger_kwargs_str '{"output_dir":"../../models/conservative_policy_retrained"}'
+  --cpu 1
 ```
 
 After training, each policy directory should contain:

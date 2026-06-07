@@ -2,33 +2,19 @@
 
 This repository contains the code, models, datasets, and experimental outputs for a thesis project on adaptive risk-aware reinforcement learning under time constraints.
 
-The central research question is: how can an agent adapt its risk attitude when the available mission time changes? A conservative policy is safer but can be too slow under tight deadlines. An aggressive policy is faster but may incur more safety cost. The proposed method learns a high-level switching controller that starts from the conservative policy and decides when it is useful to switch irreversibly to the aggressive policy.
+The central research question is: how can an agent adapt its risk attitude when the available mission time changes? A risk-aware policy is safer but can be too slow under tight deadlines. An aggressive policy is faster but may incur more safety cost. The proposed method learns a high-level switching controller that starts from the risk-aware policy and decides when it is useful to switch irreversibly to the aggressive policy.
 
 The work uses Safety Gym navigation tasks with hazards, continuous control, and explicit time budgets. The thesis method is implemented as a hierarchical controller trained from oracle-labelled episodes.
 
 ## Thesis-to-Repository Map
 
-The repository is organized to follow the thesis pipeline.
+The table tries to mirror the content disucussed in the thesis with the actual files presented in the github repo.
 
 | Thesis part | Main idea | Repository location |
 | --- | --- | --- |
-| Chapter 3, Problem Formulation | Time-budget augmented CMDP, success/deadline events, low/high-budget regimes, CVaR risk bound | `code/baselines/utils/wrappers.py`, `code/proposed_method/common/config.py` |
-| Chapter 4, Proposed Method | Irreversible optimal-stopping switch from conservative to aggressive policy | `code/proposed_method/meta_env.py`, `code/proposed_method/common/oracle.py` |
+| Chapter 4, 5.4, Proposed Method | Irreversible optimal-stopping switch from conservative to aggressive policy, Episode pool, oracle labels, 36-D features, MLP switch classifier | `code/proposed_method/meta_env.py`, `code/proposed_method/common/oracle.py` `code/proposed_method/build_episode_pool.py`, `code/proposed_method/train_switching_classifier.py`  `models/` |
 | Chapter 5.3, Baselines | SAC aggressive policy, SAC flat policy, WCSAC conservative policy | `code/baselines/sac_timeaware.py`, `code/baselines/wcsac_timeaware.py`, `models/` |
-| Chapter 5.4, Meta-controller | Episode pool, oracle labels, 36-D features, MLP switch classifier | `code/proposed_method/build_episode_pool.py`, `code/proposed_method/train_switching_classifier.py` |
-| Chapter 6, Results | Policy comparison, fixed-budget sweep, classifier quality, switch-timing analysis | `code/experiments/`, `code/proposed_method/ablation/`, `results/` |
-
-The fastest way to connect the thesis to the code is to read the repo as a reproduction pipeline:
-
-```text
-train low-level policies
-  -> build balanced conservative-win/fail episode pool
-  -> compute oracle switch labels
-  -> train switching classifier
-  -> evaluate baselines, switcher, and oracle under shared seeds/budgets
-  -> regenerate tables and figures
-```
-
+| Chapter 6, Results | Policy comparison, fixed-budget sweep, classifier quality, switch-timing analysis | `code/experiments/`, `code/proposed_method/evaluation/`, `results/` |
 ## Repository Contents
 
 ```text
@@ -850,81 +836,6 @@ This is more faithful but much more expensive because:
 - SAC/WCSAC training is long;
 - oracle labelling requires counterfactual MuJoCo rollouts;
 - multi-seed evaluation can run thousands of episodes.
-
-## Import Issues Fixed During Inspection
-
-These import/path issues were found by inspecting the repository on 2026-06-07 and have been fixed in the current working tree.
-
-1. The top-level README previously referred to `thesis_project/src/...`, but this repository uses `code/...`.
-
-2. The top-level README previously referred to `train_classifier_switch.py`, but the actual file is `code/proposed_method/train_switching_classifier.py`.
-
-3. Several experiment scripts imported:
-
-```python
-from training.supervised_learning...
-```
-
-but the actual local package is:
-
-```text
-code/proposed_method
-```
-
-Affected files include:
-
-```text
-code/experiments/exp1_performance_comparison/data_collection/evaluate_policies.py
-code/experiments/exp2_time_vs_risk_analysis/data_collection/evaluate_policies_budget_sweep.py
-code/experiments/trajectories_analysis/collect_policies_trajectories.py
-```
-
-These now add `code/proposed_method` to `sys.path` and import from the current local modules.
-
-4. The same experiment scripts imported:
-
-```python
-from wc_sac.sac.wrappers import TimeBudgetWrapper
-```
-
-but `externals/WCSAC/wc_sac/sac/` does not contain `wrappers.py`. The wrapper currently present in this repository is:
-
-```text
-code/baselines/utils/wrappers.py
-```
-
-These now add `code/baselines` to `sys.path` and import the local `TimeBudgetWrapper`.
-
-5. Two ablation scripts contained a hard-coded old path:
-
-```python
-_HERE = os.path.dirname("/workspace/thesis_project/src/training/supervised_learning/")
-```
-
-Affected files:
-
-```text
-code/proposed_method/ablation/evaluate_switch_classifier_timing.py
-code/proposed_method/ablation/plot_switching_probability_episode.py
-```
-
-These now compute the current `code/proposed_method` path from `__file__`.
-
-## Thesis/Code Discrepancies To Verify
-
-These points are important for final thesis-repo consistency. They do not prevent the repository from being useful, but they should be checked before final submission or archival.
-
-| Item | What the thesis says | What the repository shows | Suggested action |
-| --- | --- | --- | --- |
-| Baseline framework | Chapter 5.3.4 says all policies are implemented in PyTorch. | `sac_timeaware.py` and `wcsac_timeaware.py` are TensorFlow 1.x implementations; PyTorch is used for the classifier. | In the thesis, change this to: low-level policies use TensorFlow 1.x/WCSAC code, switching classifier uses PyTorch. |
-| Aggressive vs flat SAC | The aggressive baseline is reward/deadline only; the flat baseline is reward/deadline minus `lambda * hazard_cost`. | `sac_timeaware.py` now exposes `--lambda`: use `0.0` for aggressive SAC and `0.02` for the flat baseline. | For already-saved models, verify the historical training command/config if exact provenance is required. |
-| Deadline penalty | Thesis Table 5.2 lists deadline penalty `1.0` for all policies. | Saved configs show `models/aggressive_policy/config.json` with `deadline_penalty=0.0`, `models/flat_policy/config.json` with `1.0`, and `models/conservative_policy/config.json` with `0.0`, while `wcsac_timeaware.py` hardcodes `deadline_penalty = 1`. | Decide which value was actually used for final thesis results and align the thesis, configs, and training commands. |
-| WCSAC risk bound | Thesis states CVaR risk bound `d = 5`. | Conservative model config stores `cost_lim = 15.0`; evaluation then reports CVaR against the thesis risk interpretation. | Clarify whether `cost_lim=15` is an internal WCSAC training parameter and `d=5` is the evaluation safety bound, or update one of them. |
-| Experiment thresholds | Thesis mainly discusses the proposed method at threshold `0.5`. | Saved result files also include `policy_switching_pthr0.4` and `policy_switching_pthr0.6`. | README now documents all saved thresholds; the thesis can mention threshold sweeps as supporting analysis. |
-
-## Remaining Cleanup Notes
-
-1. Some comments contain minor typos or encoding artifacts, for example `firsly` and `â€”`. These do not change execution, but cleaning them would make the repository more polished.
 
 ## Citation and External Sources
 

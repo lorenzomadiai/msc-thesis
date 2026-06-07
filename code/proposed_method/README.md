@@ -36,7 +36,7 @@ The only learned component of the proposed method is the switching classifier.
 - `utils/`
   - Dataset sampling, training, evaluation, and metric helpers.
 
-- `ablation/`
+- `evaluation/`
   - Classifier-quality, switch-timing, oracle, and diagnostic plotting scripts.
 
 ## Classifier Setup

@@ -25,14 +25,6 @@ This folder contains generated tables and figures used to analyse the thesis exp
 - `trajectories`
   - Qualitative trajectory visualizations.
 
-## Naming Convention
-
-- `traindist_timeaware_seed*_eps2000_Bmin120_Bmax220_H220_6agents_2000ep.csv`
-  - Experiment 1, thesis-scale evaluation.
-
-- `fixedbudget_sweep_timeaware_seed*_eps300_Bmin120_Bmax220_Bstep10_H220_7agents_1ep.csv`
-  - Experiment 2, fixed-budget sweep.
-
 ## Note
 
 Results are generated artifacts. If you regenerate them, keep old thesis outputs or use a new tag so comparisons remain traceable.

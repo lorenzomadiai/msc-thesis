@@ -8,27 +8,13 @@ The work uses Safety Gym navigation tasks with hazards, continuous control, and 
 
 ## Thesis-to-Repository Map
 
-The repository is organized to follow the thesis pipeline.
+The table tries to mirror the content disucussed in the thesis with the actual files presented in the github repo.
 
 | Thesis part | Main idea | Repository location |
 | --- | --- | --- |
-| Chapter 3, Problem Formulation | Time-budget augmented CMDP, success/deadline events, low/high-budget regimes, CVaR risk bound | `code/baselines/utils/wrappers.py`, `code/proposed_method/common/config.py` |
-| Chapter 4, Proposed Method | Irreversible optimal-stopping switch from conservative to aggressive policy | `code/proposed_method/meta_env.py`, `code/proposed_method/common/oracle.py` |
+| Chapter 4, 5.4, Proposed Method | Irreversible optimal-stopping switch from conservative to aggressive policy, Episode pool, oracle labels, 36-D features, MLP switch classifier | `code/proposed_method/meta_env.py`, `code/proposed_method/common/oracle.py` `code/proposed_method/build_episode_pool.py`, `code/proposed_method/train_switching_classifier.py`  `models/` |
 | Chapter 5.3, Baselines | SAC aggressive policy, SAC flat policy, WCSAC conservative policy | `code/baselines/sac_timeaware.py`, `code/baselines/wcsac_timeaware.py`, `models/` |
-| Chapter 5.4, Meta-controller | Episode pool, oracle labels, 36-D features, MLP switch classifier | `code/proposed_method/build_episode_pool.py`, `code/proposed_method/train_switching_classifier.py` |
-| Chapter 6, Results | Policy comparison, fixed-budget sweep, classifier quality, switch-timing analysis | `code/experiments/`, `code/proposed_method/ablation/`, `results/` |
-
-The fastest way to connect the thesis to the code is to read the repo as a reproduction pipeline:
-
-```text
-train low-level policies
-  -> build balanced conservative-win/fail episode pool
-  -> compute oracle switch labels
-  -> train switching classifier
-  -> evaluate baselines, switcher, and oracle under shared seeds/budgets
-  -> regenerate tables and figures
-```
-
+| Chapter 6, Results | Policy comparison, fixed-budget sweep, classifier quality, switch-timing analysis | `code/experiments/`, `code/proposed_method/evaluation/`, `results/` |
 ## Repository Contents
 
 ```text

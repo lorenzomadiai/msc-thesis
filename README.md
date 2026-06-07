@@ -237,15 +237,15 @@ These two values are appended by `TimeBudgetWrapper`.
 
 ### Risk and Utility Parameters
 
-| Quantity | Thesis value | 
-| --- | --- | --- |
-| Budget minimum | `120` | 
+| Quantity | Thesis value |
+|----------|-------------|
+| Budget minimum | `120` |
 | Budget maximum | `220` |
-| Budget step |
-| Max horizon | `220` | 
+| Budget step | `5` |
+| Max horizon | `220` |
 | Hazard weight `lambda` | `0.02` |
-| CVaR risk level `alpha` | `0.1` | 
-| CVaR risk bound `d` | `5` | 
+| CVaR risk level `alpha` | `0.1` |
+| CVaR risk bound `d` | `5` |
 | Deadline penalty | `1.0` |
 
 The high-budget regime is the upper quantile of the budget distribution. In the thesis, CVaR is evaluated in this high-budget regime because this is the regime where the safety requirement is considered operationally feasible. In the thesis setting, the high-budget regime consists of episodes whose budget belongs to the top quartile of the budget distribution (i.e., above the 75th percentile).

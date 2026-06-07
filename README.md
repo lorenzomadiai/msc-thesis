@@ -4,12 +4,11 @@ This repository contains the code, models, datasets, and experimental outputs fo
 
 The central research question is: how can an agent adapt its risk attitude when the available mission time changes? A risk-aware policy is safer but can be too slow under tight deadlines. An aggressive policy is faster but may incur more safety cost. The proposed method learns a high-level switching controller that starts from the risk-aware policy and decides when it is useful to switch irreversibly to the aggressive policy.
 
-The work uses Safety Gym navigation tasks with hazards, continuous control, and explicit time budgets. The thesis method is implemented as a hierarchical controller trained from oracle-labelled episodes.
+The work uses Safety Gym navigation tasks with hazards, continuous control, and explicit time budgets. The proposed method is implemented as a hierarchical controller that decides which policy deploy, the risk-aware or the aggressive one, at each decision step. Specifically, the meta-controller is a neural network that acts as a classifier, determining at each observed state whether switching to the aggressive policy is more beneficial than continuing the episode with the risk-aware policy.
 
 ## Thesis-to-Repository Map
 
-The table tries to mirror the content disucussed in the thesis with the actual files presented in the github repo.
-
+This table is intended to map the content discussed in the thesis to the corresponding files in the GitHub repository.
 | Thesis part | Main idea | Repository location |
 | --- | --- | --- |
 | Chapter 4, 5.4, Proposed Method | Irreversible optimal-stopping switch from conservative to aggressive policy, Episode pool, oracle labels, 36-D features, MLP switch classifier | `code/proposed_method/meta_env.py`, `code/proposed_method/common/oracle.py` `code/proposed_method/build_episode_pool.py`, `code/proposed_method/train_switching_classifier.py`  `models/` |
@@ -45,7 +44,7 @@ thesis_project/
 
 ### `code/baselines`
 
-This folder contains the modified low-level reinforcement learning algorithms used to train the baseline policies.
+This folder contains the reinforcement learning algorithms used to train the baseline policies; it contains also the wrapper to include time limits in the environment.
 
 - `sac_timeaware.py` trains SAC-style time-aware policies.
   - It is used for the aggressive policy, which optimizes task completion more directly.
@@ -53,35 +52,35 @@ This folder contains the modified low-level reinforcement learning algorithms us
   - It adds `TimeBudgetWrapper`, deadline-aware termination, and time-budget observations.
 
 - `wcsac_timeaware.py` trains the conservative risk-aware policy.
-  - It is based on the WCSAC implementation vendored in `externals/WCSAC`.
+  - It is based on the WCSAC implementation present in `externals/WCSAC`.
   - It adds the same time-budget wrapper and Safety Gym setup used by the SAC baseline.
-  - It optimizes a risk-aware objective using cost/CVaR-related terms.
+  - It optimizes the same objective function of the other algorithm but at the same time is satisfies a risk-based safety costraint related to the exposure to the hazards.
 
 - `utils/wrappers.py` defines `TimeBudgetWrapper`.
   - The wrapper appends normalized remaining time and normalized mission budget to the observation.
   - It terminates an episode when the budget expires.
   - It optionally adds a deadline penalty.
 
-The baseline policies are the foundation of the rest of the project. The proposed method does not learn low-level motor control from scratch; it learns when to switch between already-trained low-level policies.
+The baseline policies are the foundation of the rest of the project. The proposed method does not learn low-level policies from scratch but it learns when to switch between already-trained low-level policies.
 
 ### `code/proposed_method`
 
 This folder contains the proposed hierarchical switching method.
 
-- `meta_env.py` defines the meta-level environment.
+- `meta_env.py` defines the meta-level environment at which the meta-controller works:
   - Action `0` means keep using the conservative policy.
   - Action `1` means switch to the aggressive policy.
   - In the thesis setting the switch is irreversible: after switching, the aggressive policy is used until the end of the episode.
 
 - `build_episode_pool.py` creates an offline pool of seeded episodes.
-  - The pool stores episode seeds, sampled budgets, conservative-policy success/failure, and oracle-related hints.
-  - This creates a reproducible source of episodes for classifier training.
+  - The pool stores episode seeds, sampled budgets, conservative-policy success/failure, and the best time to switch using the heuristic presented in the thesis report.
+  - One pool of episodes is used to generate the training set and another pool of episodes is used to generate the test set.
 
 - `train_switching_classifier.py` trains the learned meta-controller.
-  - It uses the episode pool.
-  - It computes oracle gap labels of the form `delta(k) = Return_switch(k) - Return_wait(k)`.
-  - It trains a binary classifier predicting whether switching is better than waiting.
-  - It saves `switching_model.pt`, `config.json`, `dataset_summary.json`, `train_history.csv`, and `eval_results.json`.
+  - It uses the episode pool to generate a dataset of observation states (lidar info, velocity, time available) and the respective label.
+  - The respective gap labels are of the form `delta(k) = Return_switch(k) - Return_wait(k)`.
+  - It trains a binary classifier predicting whether switching is better than waiting based on the current observation state.
+  - It saves `switching_model.pt`, `config.json`, `dataset_summary.json` and `train_history.csv`.
 
 - `common/` contains shared logic:
   - `config.py`: Safety Gym configuration.
@@ -107,11 +106,10 @@ This folder contains scripts used to generate the thesis experiments after polic
 
 - `exp2_time_vs_risk_analysis/`
   - Evaluates policies over fixed-budget sweeps.
-  - This isolates how behaviour changes as the time budget becomes tighter.
+  - This isolates how behaviour changes as the time budget becomes tighter for the same tasks/missions.
 
 - `trajectories_analysis/`
-  - Collects and plots representative trajectories.
-  - Useful for qualitative interpretation of flat, conservative, aggressive, and switching behaviour.
+  - Collects and plots trajectories followed by the different policies to reach the goal.
 
 ### `data`
 
@@ -127,19 +125,19 @@ This folder stores intermediate reproducibility artifacts.
   - Cached supervised dataset derived from the training episode pool.
 
 - `data/datasets/test_set/`
-  - Cached dataset/evaluation artifacts for testing.
+  - Cached dataset derived from the testing episode pool.
 
-These files are useful because oracle labelling is expensive. Reusing the cached pools and datasets makes reproduction faster and more stable.
+These files are useful because the labelling process is expensive. Reusing the cached pools and datasets makes reproduction faster and more stable.
 
 ### `models`
 
 This folder stores trained artifacts.
 
 - `models/aggressive_policy/`
-  - SAC time-aware policy used as the fast/risk-seeking low-level controller.
+  - SAC time-aware policy used as the risk-seeking policy.
 
 - `models/conservative_policy/`
-  - WCSAC time-aware policy used as the safer low-level controller.
+  - WCSAC time-aware policy used as the risk-aware conservative policy.
 
 - `models/flat_policy/`
   - Single-policy baseline with a fixed reward-cost trade-off.
@@ -161,7 +159,6 @@ This folder contains generated thesis outputs.
 - `results/figures/`
   - Plots used for analysis and thesis figures.
 
-The results are not source code, but they are important for checking whether a new run is close to the reported thesis results.
 
 ### `docs`
 
@@ -181,7 +178,6 @@ This folder contains local copies of third-party projects required by the thesis
   - Safety Gym benchmark environment.
   - Original project: <https://github.com/openai/safety-gym>
 
-These repositories are included locally because the project depends on older versions of Gym, TensorFlow, MuJoCo, and Safety Gym. Using the vendored copies helps avoid version drift.
 
 ## Method Summary
 
@@ -191,27 +187,14 @@ At the low level:
 
 1. The conservative policy tries to reach the goal while limiting safety cost.
 2. The aggressive policy tries to reach the goal quickly.
-3. The flat policy is a comparison baseline that uses one fixed risk-performance trade-off.
+3. The flat policy is a comparison baseline that uses one fixed risk-performance trade-off in a single policy.
 
 At the high level:
 
-1. The classifier observes compact state features.
+1. The classifier observes current state features.
 2. It predicts `P(switch is better than waiting)`.
 3. If the probability is above a threshold, the controller switches from conservative to aggressive.
 4. The switch is irreversible.
-
-The classifier is trained from oracle labels. For sampled decision steps `k`, the oracle compares:
-
-```text
-delta(k) = Return_switch(k) - Return_wait(k)
-```
-
-The binary training label is:
-
-```text
-delta(k) > 0     switch
-delta(k) <= 0    wait
-```
 
 ## Exact Thesis Setup
 
@@ -221,8 +204,8 @@ The main experiments use the following setup from Chapters 3-6 of the thesis.
 
 | Quantity | Value |
 | --- | --- |
-| Benchmark | OpenAI Safety Gym |
-| Task | Static point-goal navigation |
+| Environment | OpenAI Safety Gym |
+| Task | Point-goal navigation |
 | Robot | Point robot |
 | Arena extents | `[-1.5, -1.5, 1.5, 1.5]` |
 | Goal location | `(1.1, 1.1)` |
@@ -243,7 +226,7 @@ Each episode samples a mission budget from:
 B ~ Uniform({120, 125, 130, ..., 220})
 ```
 
-The low-level policies observe the original Safety Gym observation plus:
+The policies observe the original Safety Gym observation plus:
 
 ```text
 time_left_norm = 2 * (B - t) / B - 1
@@ -254,18 +237,18 @@ These two values are appended by `TimeBudgetWrapper`.
 
 ### Risk and Utility Parameters
 
-| Quantity | Thesis value | Where it appears |
+| Quantity | Thesis value | 
 | --- | --- | --- |
-| Budget minimum | `120` | training, pools, evaluation |
-| Budget maximum | `220` | training, pools, evaluation |
-| Budget step | `5` for training/pools, `10` for the fixed-budget sweep | scripts |
-| Max horizon | `220` | evaluation and classifier rollouts |
-| Hazard weight `lambda` | `0.02` | flat baseline and oracle utility |
-| CVaR risk level `alpha` | `0.1` | high-budget risk analysis |
-| CVaR risk bound `d` | `5` | thesis safety target |
-| Deadline penalty | `1.0` in the thesis formulation | see discrepancy notes below |
+| Budget minimum | `120` | 
+| Budget maximum | `220` |
+| Budget step |
+| Max horizon | `220` | 
+| Hazard weight `lambda` | `0.02` |
+| CVaR risk level `alpha` | `0.1` | 
+| CVaR risk bound `d` | `5` | 
+| Deadline penalty | `1.0` |
 
-The high-budget regime is the upper quantile of the budget distribution. In the thesis, CVaR is evaluated in this high-budget regime because this is the regime where the safety requirement is considered operationally feasible.
+The high-budget regime is the upper quantile of the budget distribution. In the thesis, CVaR is evaluated in this high-budget regime because this is the regime where the safety requirement is considered operationally feasible. In the thesis setting, the high-budget regime consists of episodes whose budget belongs to the top quartile of the budget distribution (i.e., above the 75th percentile).
 
 ### Classifier Setup
 
@@ -324,7 +307,7 @@ conda env create -f environment_windows.yml
 conda activate th_project
 ```
 
-Both environment files install the vendored external repositories in editable mode:
+Both environment files install the external repositories in editable mode:
 
 ```text
 -e ./externals/safety-gym
@@ -369,7 +352,7 @@ python -c "import mujoco_py; print('mujoco-py import OK')"
 
 ### Important Installation Notes
 
-This project intentionally uses an old RL stack because Safety Gym, MuJoCo 2.0, TensorFlow 1.x, and the WCSAC implementation are version-sensitive. Do not freely upgrade Gym, TensorFlow, `mujoco-py`, or NumPy if the goal is thesis reproduction.
+This project uses an old RL stack because Safety Gym, MuJoCo 2.0, TensorFlow 1.x, and the WCSAC implementation are version-sensitive. Do not freely upgrade Gym, TensorFlow, `mujoco-py`, or NumPy if the goal is thesis reproduction.
 
 If Safety Gym installation fails because it tries to force `mujoco_py==2.0.2.7`, remove that exact dependency from `externals/safety-gym/setup.py`. The project environment already pins:
 
@@ -383,8 +366,6 @@ Common environment problems:
 - `mujoco_py` compilation fails: confirm that Python 3.7, compatible compiler tools, and the pinned NumPy/Cython versions are active.
 - `mpi4py` fails: install/use the MPI runtime supplied by conda (`mpich` on the main environment file).
 - `safety_gym` imports but environment creation fails: check that the local editable install points to `externals/safety-gym`.
-
-For full reproducibility in a thesis setting, record your operating system, GPU/CPU setup, CUDA availability, and whether evaluation was run on CPU or GPU. The included thesis artifacts were produced with fixed seeds, but exact retraining can still show small variation due to RL stochasticity, MPI execution, TensorFlow numerical behavior, and MuJoCo/Safety Gym version sensitivity.
 
 ## Reproducibility Principles
 
@@ -512,12 +493,6 @@ saved_model.pb
 variables/
 config.json
 progress.txt
-```
-
-Return to the repository root before running the proposed-method scripts:
-
-```powershell
-cd ..\..
 ```
 
 ## Building the Episode Pool
@@ -723,8 +698,6 @@ python .\code\proposed_method\evaluation\evaluate_switch_classifier_quality.py `
   --dataset_npz .\data\datasets\test_set\test_set_cached.npz `
   --config_json .\models\switching_classifier\config.json `
   --prob_threshold 0.5 `
-  --n_bins 10 `
-  --sweep_points 41 `
   --results_dir .\results\tables\classifier_evaluation\metrics
 ```
 

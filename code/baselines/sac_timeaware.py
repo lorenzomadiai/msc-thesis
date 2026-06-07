@@ -199,14 +199,14 @@ class ReplayBuffer:
             done=self.done_buf[idxs]
         )
 
-# -------------------- SAC (reward-only) --------------------
+# -------------------- SAC (optionally cost-shaped) --------------------
 def sac(env_fn, actor_fn=mlp_actor, critic_fn=mlp_critic, ac_kwargs=dict(), seed=0,
         steps_per_epoch=1000, epochs=100, replay_size=int(1e6), gamma=0.99,
         polyak=0.995, lr=1e-4, batch_size=1024, local_start_steps=int(1e3),
         max_ep_len=1000, logger_kwargs=dict(), save_freq=10, local_update_after=int(1e3),
         update_freq=1, render=False,
         fixed_entropy_bonus=None, entropy_constraint=-1.0,
-        reward_scale=1,
+        reward_scale=1, lambda_cost=0.0,
 
         # === time wrapper params ===
         budget_min=None, budget_max=None, deadline_penalty=0.0, eval_max_budget=None,
@@ -359,7 +359,8 @@ def sac(env_fn, actor_fn=mlp_actor, critic_fn=mlp_critic, ac_kwargs=dict(), seed
         r *= reward_scale
         cost = info.get('cost', 0)
 
-        r -= 0.02 * cost
+        if lambda_cost != 0.0:
+            r -= lambda_cost * cost
 
         ep_ret += r
         ep_len += 1
@@ -447,6 +448,8 @@ if __name__ == '__main__':
     parser.add_argument('--local_start_steps', default=500, type=int)
     parser.add_argument('--local_update_after', default=500, type=int)
     parser.add_argument('--batch_size', default=256, type=int)
+    parser.add_argument('--lambda', dest='lambda_cost', default=0.0, type=float,
+                        help='Hazard-cost penalty coefficient. Use 0.0 for aggressive SAC and 0.02 for the flat baseline.')
 
     # entropy (keep)
     parser.add_argument('--fixed_entropy_bonus', default=None, type=float)
@@ -506,6 +509,7 @@ if __name__ == '__main__':
         local_update_after=args.local_update_after,
         fixed_entropy_bonus=args.fixed_entropy_bonus,
         entropy_constraint=args.entropy_constraint,
+        lambda_cost=args.lambda_cost,
         budget_min=args.budget_min if args.use_time_wrapper else None,
         budget_max=args.budget_max if args.use_time_wrapper else None,
         deadline_penalty=args.deadline_penalty,

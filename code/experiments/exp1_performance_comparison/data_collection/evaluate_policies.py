@@ -44,18 +44,21 @@ import warnings
 warnings.filterwarnings("ignore", category=FutureWarning)
 
 from safety_gym.envs.engine import Engine
-from wc_sac.sac.wrappers import TimeBudgetWrapper
 
 SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
-PROJECT_SRC = os.path.abspath(os.path.join(SCRIPT_DIR, "..", ".."))
-if PROJECT_SRC not in sys.path:
-    sys.path.append(PROJECT_SRC)
+CODE_DIR = os.path.abspath(os.path.join(SCRIPT_DIR, "..", "..", ".."))
+BASELINES_DIR = os.path.join(CODE_DIR, "baselines")
+PROPOSED_METHOD_DIR = os.path.join(CODE_DIR, "proposed_method")
+for path in (PROPOSED_METHOD_DIR, BASELINES_DIR):
+    if path not in sys.path:
+        sys.path.insert(0, path)
 
-from training.supervised_learning.common.features import (  # noqa: E402
+from utils.wrappers import TimeBudgetWrapper  # noqa: E402
+from common.features import (  # noqa: E402
     N_FEATURES,
     extract_features,
 )
-from training.supervised_learning.meta_env import MetaEnv  # noqa: E402
+from meta_env import MetaEnv  # noqa: E402
 
 
 # Identical to config1 in wcsac_timeaware.py — no fixed robot_placements / robot_keepout

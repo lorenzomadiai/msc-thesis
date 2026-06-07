@@ -40,7 +40,7 @@ warnings.filterwarnings("ignore", category=FutureWarning)
 
 from safety_gym.envs.engine import Engine
 
-_HERE = os.path.dirname("/workspace/thesis_project/src/training/supervised_learning/")
+_HERE = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 print(f"Adding {_HERE} to sys.path for module imports.")
 sys.path.insert(0, _HERE)
 

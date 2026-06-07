@@ -38,7 +38,7 @@
         "output_dir":	"./data"
     },
     "lr":	0.001,
-    "max_ep_len":	1000,
+    "max_ep_len":	220,
     "polyak":	0.995,
     "render":	false,
     "replay_size":	1000000,

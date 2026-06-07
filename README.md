@@ -356,7 +356,21 @@ self.model = load_model_from_path(xml_path)
 
 This patch was necessary because, on the Windows setup used for this project, `load_model_from_xml()` failed when loading the dynamically generated Safety Gym model, whereas `load_model_from_path()` worked correctly.
 
-The modification only affects the model-loading procedure and does not intentionally alter the environment dynamics, observations, rewards, costs, or task definition.
+#### Seed Compatibility Patch
+
+In `externals/safety-gym/safety_gym/envs/engine.py`, the automatic seed generation was patched to avoid a Windows/NumPy error:
+
+```python
+self._seed = np.random.randint(2**32) if seed is None else seed
+```
+
+was replaced with:
+
+```python
+self._seed = np.random.randint(2**31 - 1) if seed is None else seed
+```
+
+This avoids `ValueError: high is out of bounds for int32` without changing the task dynamics, observations, rewards, or costs.
 ## Environment Reproduction
 
 The project uses an old RL stack:

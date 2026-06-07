@@ -23,7 +23,7 @@ The thesis training pool contains:
 - `500` conservative-policy failures.
 
 The classifier dataset contains approximately `3000` state-level samples.
-
+While the test set containts approximately `1500` state-level samples and was obtained starting from a dataset of 500 episodes without a specific balance enforced between win and failed episodes.
 ## Regenerating Data
 
 Use:

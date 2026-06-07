@@ -203,7 +203,7 @@ The main experiments use the following setup from Chapters 3-6 of the thesis.
 ### Environment
 
 | Quantity | Value |
-| --- | --- |
+| --- | --- | --- |
 | Environment | OpenAI Safety Gym |
 | Task | Point-goal navigation |
 | Robot | Point robot |

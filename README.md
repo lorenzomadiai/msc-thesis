@@ -2,7 +2,7 @@
 
 This repository contains the code, models, datasets, and experimental outputs for a thesis project on adaptive risk-aware reinforcement learning under time constraints.
 
-The central research question is: how can an agent adapt its risk attitude when the available mission time changes? A conservative policy is safer but can be too slow under tight deadlines. An aggressive policy is faster but may incur more safety cost. The proposed method learns a high-level switching controller that starts from the conservative policy and decides when it is useful to switch irreversibly to the aggressive policy.
+The central research question is: how can an agent adapt its risk attitude when the available mission time changes? A risk-aware policy is safer but can be too slow under tight deadlines. An aggressive policy is faster but may incur more safety cost. The proposed method learns a high-level switching controller that starts from the risk-aware policy and decides when it is useful to switch irreversibly to the aggressive policy.
 
 The work uses Safety Gym navigation tasks with hazards, continuous control, and explicit time budgets. The thesis method is implemented as a hierarchical controller trained from oracle-labelled episodes.
 

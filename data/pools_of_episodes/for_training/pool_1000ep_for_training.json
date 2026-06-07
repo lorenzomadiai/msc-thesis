@@ -1,0 +1,23 @@
+{
+  "pool_size": 1000,
+  "target_win": 500,
+  "target_fail": 500,
+  "n_win": 500,
+  "n_fail": 500,
+  "fail_frac": 0.5,
+  "rejected_fail_no_positive": 10,
+  "attempts": 4511,
+  "max_attempts": 30000,
+  "budget_min": 120,
+  "budget_max": 220,
+  "budget_step": 5,
+  "max_horizon": 220,
+  "base_seed": 1505,
+  "cost_weight": 0.02,
+  "deadline_weight": 1.0,
+  "gamma": 1.0,
+  "switch_interval": 5,
+  "scan_interval": 5,
+  "n_top_zones": 2,
+  "output_csv": "results/threshold/pools/pool_1000_with_k_optimal.csv"
+}

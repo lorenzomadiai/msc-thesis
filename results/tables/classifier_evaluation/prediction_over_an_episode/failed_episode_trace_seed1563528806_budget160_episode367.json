@@ -1,0 +1,34 @@
+{
+  "selected_episode": {
+    "episode": 367,
+    "seed": 1563528806,
+    "budget": 160,
+    "cons_success": 0,
+    "best_k": 78
+  },
+  "analysis": {
+    "steps_recorded": 160,
+    "episode_len": 160,
+    "goal_met": false,
+    "mission_failed": true,
+    "threshold_cross_k": 66,
+    "mean_p_switch_useful": 0.3263054819724197,
+    "max_p_switch_useful": 0.610025591639779,
+    "corr_p_vs_failure_pressure": 0.09334046572905005,
+    "final_cumulative_cost": 0.0
+  },
+  "config": {
+    "switch_prob_threshold": 0.5,
+    "plot_smoothing_window": 15,
+    "selection_mode": "any",
+    "model_ckpt": "results/policy_switching/classifier_runs/run_new_best_lidar_obs/gap_model.pt",
+    "episode_pool_csv": "results/policy_switching/pools_of_episodes/pool_episodes_evaluation2.0.csv",
+    "cons_dir": "WCSAC/wc_sac/sac/.runs/StaticEnvWithTime/conservative_agent_baseline/simple_save6",
+    "agg_dir": "WCSAC/wc_sac/sac/.runs/StaticEnvWithTime/sac_rew_shaped/simple_save8",
+    "max_horizon": 160
+  },
+  "outputs": {
+    "trace_csv": "results/risk_analysis/failed_episode_trace_seed1563528806_budget160_episode367.csv",
+    "plot_png": "results/risk_analysis/failed_episode_trace_seed1563528806_budget160_episode367.png"
+  }
+}

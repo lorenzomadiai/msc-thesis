@@ -1,0 +1,115 @@
+{
+  "config": {
+    "model_ckpt": "results/policy_switching/classifier/run_new_best_lidar_obs/gap_model.pt",
+    "dataset_npz": "results/policy_switching/dataset/dataset_quality_classifier2.0/dataset_cached.npz",
+    "config_json": "results/policy_switching/classifier/run_new_best_lidar_obs/config.json",
+    "prob_threshold": 0.5,
+    "n_bins": 10,
+    "eval_split": "test",
+    "tag": "eval"
+  },
+  "splits": {
+    "test": {
+      "n": 1480,
+      "positive_rate_true": 0.1783783783783784,
+      "positive_rate_pred": 0.13851351351351351,
+      "positive_rate_gap_abs": 0.039864864864864874,
+      "tp": 154,
+      "tn": 1165,
+      "fp": 51,
+      "fn": 110,
+      "bce": 0.22124934196472168,
+      "accuracy": 0.8912162162162162,
+      "balanced_accuracy": 0.7706962719298246,
+      "precision": 0.751219512195122,
+      "recall": 0.5833333333333334,
+      "specificity": 0.9580592105263158,
+      "npv": 0.9137254901960784,
+      "f1": 0.6567164179104479,
+      "brier_score": 0.07236145354699998,
+      "brier_score_cond_y1": 0.26634976251098763,
+      "brier_score_cond_y0": 0.03024557067981846,
+      "roc_auc": 0.947056917862839,
+      "pr_auc": 0.6974282518757179,
+      "ece": 0.023459491735754796
+    }
+  },
+  "threshold_free_summary": {
+    "roc_auc": 0.947056917862839,
+    "pr_auc": 0.6974282518757179,
+    "bce": 0.22124934196472168,
+    "brier_score": 0.07236145354699998
+  },
+  "primary_split_ece": 0.023459491735754796,
+  "primary_threshold_sweep": {
+    "best_f1_threshold": 0.2305,
+    "best_f1": 0.7315541601255886,
+    "best_balanced_accuracy_threshold": 0.1325,
+    "best_balanced_accuracy": 0.8954470693779905
+  },
+  "confusion_matrices_threshold_0.1_to_0.9": [
+    {
+      "threshold": 0.1,
+      "tp": 254,
+      "tn": 998,
+      "fp": 218,
+      "fn": 10
+    },
+    {
+      "threshold": 0.2,
+      "tp": 241,
+      "tn": 1059,
+      "fp": 157,
+      "fn": 23
+    },
+    {
+      "threshold": 0.30000000000000004,
+      "tp": 220,
+      "tn": 1097,
+      "fp": 119,
+      "fn": 44
+    },
+    {
+      "threshold": 0.4,
+      "tp": 189,
+      "tn": 1133,
+      "fp": 83,
+      "fn": 75
+    },
+    {
+      "threshold": 0.5,
+      "tp": 154,
+      "tn": 1165,
+      "fp": 51,
+      "fn": 110
+    },
+    {
+      "threshold": 0.6,
+      "tp": 116,
+      "tn": 1187,
+      "fp": 29,
+      "fn": 148
+    },
+    {
+      "threshold": 0.7000000000000001,
+      "tp": 72,
+      "tn": 1203,
+      "fp": 13,
+      "fn": 192
+    },
+    {
+      "threshold": 0.8,
+      "tp": 37,
+      "tn": 1211,
+      "fp": 5,
+      "fn": 227
+    },
+    {
+      "threshold": 0.9,
+      "tp": 7,
+      "tn": 1216,
+      "fp": 0,
+      "fn": 257
+    }
+  ]
+}

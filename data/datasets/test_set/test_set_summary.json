@@ -1,0 +1,21 @@
+{
+  "n_samples": 1480,
+  "pool_size": 500,
+  "pool_win": 250,
+  "pool_fail": 250,
+  "n_train": 1184,
+  "n_val": 148,
+  "n_test": 148,
+  "samples_per_episode_effective": 2.96,
+  "n_switch_label_train": 199,
+  "n_wait_label_train": 985,
+  "n_features": 36,
+  "feature_history": 0,
+  "feature_layout": "1x[hazards_lidar(16)+goal_lidar(16)+v_xy(2)+time_left_norm+budget_norm]",
+  "dataset_cache_path": "/workspace/thesis_project/results/policy_switching/classifier/dataset_quality_classifier2.0/dataset_cached.npz",
+  "dataset_cache_status": "saved",
+  "delta_mean": 0.027702707797288895,
+  "delta_std": 0.6526868343353271,
+  "delta_min": -1.159999966621399,
+  "delta_max": 2.0
+}

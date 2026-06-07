@@ -1,0 +1,58 @@
+{
+    "ac_kwargs":	{
+        "hidden_sizes":	[
+            256,
+            256
+        ]
+    },
+    "actor_fn":	"mlp_actor",
+    "batch_size":	256,
+    "budget_max":	220,
+    "budget_min":	120,
+    "cl":	0.1,
+    "cost_constraint":	null,
+    "cost_lim":	15.0,
+    "critic_fn":	"mlp_critic",
+    "damp_scale":	10,
+    "deadline_penalty":	0.0,
+    "entropy_constraint":	-1,
+    "env_fn":	"<function <lambda> at 0x74184f28a5f0>",
+    "epochs":	100,
+    "fixed_cost_penalty":	null,
+    "fixed_entropy_bonus":	null,
+    "gamma":	0.99,
+    "local_start_steps":	500,
+    "local_update_after":	500,
+    "logger":	{
+        "<wc_sac.utils.logx.EpochLogger object at 0x74184f32e390>":	{
+            "epoch_dict":	{},
+            "exp_name":	null,
+            "first_row":	true,
+            "log_current_row":	{},
+            "log_headers":	[],
+            "output_dir":	".runs/StaticEnvWithTime/minbudget140_maxbudget260_penalty_0",
+            "output_file":	{
+                "<_io.TextIOWrapper name='.runs/StaticEnvWithTime/minbudget140_maxbudget260_penalty_0/progress.txt' mode='w' encoding='UTF-8'>":	{
+                    "mode":	"w"
+                }
+            }
+        }
+    },
+    "logger_kwargs":	{
+        "output_dir":	".runs/StaticEnvWithTime/minbudget140_maxbudget260_penalty_0"
+    },
+    "lr":	0.001,
+    "lr_scale":	50,
+    "max_ep_len":	1000,
+    "pdf_cdf":	1.7549833193248685,
+    "polyak":	0.995,
+    "render":	false,
+    "replay_size":	1000000,
+    "reward_scale":	1,
+    "save_freq":	15,
+    "seed":	0,
+    "steps_per_epoch":	30000,
+    "update_freq":	100,
+    "use_costs":	15.0,
+    "var_fn":	"mlp_var"
+}

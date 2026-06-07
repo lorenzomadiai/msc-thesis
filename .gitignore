@@ -15,8 +15,9 @@
 /WCSAC/wc_sac/sac/__init__.py
 /WCSAC/wc_sac/sac/LICENSE
 /WCSAC/wc_sac/sac/readme.md
-/plots
-/results
+/results/other
+/models/other
+
 /runs_meta
 /resultslore
 /WCSAC

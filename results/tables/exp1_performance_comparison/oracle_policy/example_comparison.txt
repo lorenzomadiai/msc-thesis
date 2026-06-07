@@ -1,0 +1,36 @@
+episodes        = 2000
+cons_succeeded  = 1739
+cons_failed     = 261
+oracle_improved = 257
+oracle_degraded = -257
+
+[conservative]
+  n = 2000
+  success_rate = 0.8695
+  mean_cost = 0.0
+  cvar10 = 0.0
+  cvar20 = 0.0
+  cvar30 = 0.0
+
+[pure_aggressive]
+  n = 2000
+  success_rate = 0.998
+  mean_cost = 18.3545
+  cvar10 = 52.615
+  cvar20 = 51.7275
+  cvar30 = 50.74166666666667
+
+[oracle_switch]
+  n = 2000
+  success_rate = 0.998
+  mean_cost = 3.824
+  cvar10 = 38.24
+  cvar20 = 19.12
+  cvar30 = 12.746666666666666
+
+[delta: oracle - conservative]
+  success_rate = +0.1285
+  mean_cost    = +3.8240
+  cvar10       = +38.2400
+  cvar20       = +19.1200
+  cvar30       = +12.7467

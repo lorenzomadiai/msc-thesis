@@ -1,0 +1,21 @@
+{
+  "n_samples": 2976,
+  "pool_size": 1000,
+  "pool_win": 500,
+  "pool_fail": 500,
+  "n_train": 2380,
+  "n_val": 298,
+  "n_test": 298,
+  "samples_per_episode_effective": 2.976,
+  "n_switch_label_train": 421,
+  "n_wait_label_train": 1959,
+  "n_features": 36,
+  "feature_history": 0,
+  "feature_layout": "1x[hazards_lidar(16)+goal_lidar(16)+v_xy(2)+time_left_norm+budget_norm]",
+  "dataset_cache_path": "/workspace/thesis_project/results/policy_switching/classifier/run14_lidar_obs/dataset_cached.npz",
+  "dataset_cache_status": "loaded",
+  "delta_mean": 0.038293011486530304,
+  "delta_std": 0.6584187746047974,
+  "delta_min": -2.119999885559082,
+  "delta_max": 2.0
+}

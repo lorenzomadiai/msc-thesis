@@ -1,0 +1,16 @@
+{
+  "supervised_test": {
+    "bce": 0.22631768882274628,
+    "acc": 0.8783783912658691,
+    "n_test": 148
+  },
+  "gap_policy": {
+    "success_rate": 1.0,
+    "mean_cost": 6.94,
+    "cvar_10": 50.0,
+    "cvar_20": 34.7,
+    "cvar_30": 23.133333333333333,
+    "frac_switched": 0.24,
+    "mean_switch_step": 20.166666666666668
+  }
+}

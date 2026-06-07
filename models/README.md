@@ -16,8 +16,6 @@ This folder stores the trained policies and switching classifier used by the the
 - `switching_classifier/`
   - PyTorch classifier used as the proposed high-level meta-controller.
 
-- `other/`
-  - Extra or archived model artifacts not part of the main reproduction path.
 
 ## Expected Files
 
@@ -44,7 +42,4 @@ For fast reproduction, use the existing models and rerun only the evaluation and
 
 For full reproduction, retrain the low-level policies first, then rebuild the episode pool and retrain the switching classifier.
 
-## Note
-
-Model folders are generated artifacts. Their `config.json` files are important for auditing how the thesis results were produced, so avoid editing them unless you are intentionally correcting a documented inconsistency.
 

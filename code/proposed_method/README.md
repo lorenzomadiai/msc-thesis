@@ -56,14 +56,4 @@ The thesis classifier uses:
 
 The trained classifier is stored in `models/switching_classifier/`.
 
-## Reproduction Path
-
-The proposed method is reproduced in this order:
-
-```text
-build_episode_pool.py
-  -> train_switching_classifier.py
-  -> code/experiments/* evaluation scripts
-  -> code/proposed_method/ablation/* diagnostics
-```
 

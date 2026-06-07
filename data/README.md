@@ -35,7 +35,4 @@ python .\code\proposed_method\train_switching_classifier.py ...
 
 The complete commands are listed in the top-level README.
 
-## Note
-
-Files in this folder are generated artifacts. Do not manually edit them unless you are deliberately correcting metadata or documenting a known issue.
 

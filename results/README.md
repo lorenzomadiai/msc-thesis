@@ -10,9 +10,6 @@ This folder contains generated tables and figures used to analyse the thesis exp
 - `figures/`
   - Plots generated from the result tables.
 
-- `other/`
-  - Extra or archived outputs not part of the main thesis reproduction path.
-
 ## Main Result Groups
 
 - `exp1_performance_comparison`
@@ -20,7 +17,7 @@ This folder contains generated tables and figures used to analyse the thesis exp
   - Includes success rate, mean hazard exposure, and CVaR analysis.
 
 - `exp2_time_vs_risk_analysis`
-  - Fixed-budget sweep showing how performance and risk change with available time.
+  - Fixed-budget sweep showing how performance and risk change with available time for the same tasks.
 
 - `classifier_evaluation`
   - Classifier quality, confusion matrices, threshold sweeps, and switch-timing diagnostics.

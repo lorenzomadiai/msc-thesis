@@ -37,7 +37,4 @@ The main thesis evaluation uses:
 
 The exact commands are documented in the top-level README.
 
-## Outputs
-
-Experiment scripts write CSV/JSON tables to `results/tables/`. Plotting scripts write figures to `results/figures/`.
 

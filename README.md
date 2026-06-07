@@ -426,23 +426,6 @@ You should also verify MuJoCo after activating the conda environment:
 python -c "import mujoco_py; print('mujoco-py import OK')"
 ```
 
-### Important Installation Notes
-
-This project uses an old RL stack because Safety Gym, MuJoCo 2.0, TensorFlow 1.x, and the WCSAC implementation are version-sensitive. Do not freely upgrade Gym, TensorFlow, `mujoco-py`, or NumPy if the goal is thesis reproduction.
-
-If Safety Gym installation fails because it tries to force `mujoco_py==2.0.2.7`, remove that exact dependency from `externals/safety-gym/setup.py`. The project environment already pins:
-
-```text
-mujoco-py==2.0.2.10
-```
-
-Common environment problems:
-
-- `mujoco_py` cannot find MuJoCo: check `~/.mujoco/mujoco200` and the MuJoCo `bin` directory on `PATH`.
-- `mujoco_py` compilation fails: confirm that Python 3.7, compatible compiler tools, and the pinned NumPy/Cython versions are active.
-- `mpi4py` fails: install/use the MPI runtime supplied by conda (`mpich` on the main environment file).
-- `safety_gym` imports but environment creation fails: check that the local editable install points to `externals/safety-gym`.
-
 ## Reproducibility Principles
 
 Fair reproduction requires using the same:

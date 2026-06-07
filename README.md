@@ -281,6 +281,82 @@ The thesis classifier test metrics are:
 | Recall | `0.583` |
 | F1-score | `0.657` |
 
+## Cloning the Repository
+
+This project depends on two external repositories located in `externals/`:
+
+- WCSAC
+- Safety Gym
+
+These repositories are required to reproduce the thesis experiments.
+
+### Clone with Submodules
+
+If the repository is configured with Git submodules, clone everything with:
+
+```bash
+git clone --recurse-submodules https://github.com/lorenzomadiai/msc-thesis.git
+cd msc-thesis
+```
+
+If the repository has already been cloned, initialize the submodules with:
+
+```bash
+git submodule update --init --recursive
+```
+
+### Manual Installation of External Dependencies
+
+If submodules are not available, clone the required repositories manually:
+
+```bash
+git clone https://github.com/AlgTUDelft/WCSAC.git externals/WCSAC
+git clone https://github.com/openai/safety-gym.git externals/safety-gym
+```
+
+The environment files and installation instructions assume that both repositories are available under the `externals/` directory.
+
+### Safety Gym Modifications
+Safety Gym is used as the benchmark environment for the thesis experiments. A small compatibility patch was applied to make the environment work correctly with the local Windows and MuJoCo setup used in this project.
+
+#### MuJoCo Dependency Patch
+
+The original Safety Gym `setup.py` explicitly requires:
+
+```python
+mujoco_py==2.0.2.7
+```
+The project environment already installs the compatible version of `mujoco-py` specified in the main environment files. Therefore, Safety Gym is installed as a local editable package without forcing its original pinned MuJoCo dependency.
+
+#### Modification in `world.py`
+
+At approximately line 290 of `safety_gym/envs/world.py`, the original code loads the MuJoCo model directly from an XML string:
+
+```python
+self.model = load_model_from_xml(self.xml_string)
+```
+
+This was replaced by a workaround that first writes the generated XML to a temporary file and then loads the model using:
+
+```python
+import tempfile
+from mujoco_py import load_model_from_path
+
+with tempfile.NamedTemporaryFile(
+    mode="w",
+    suffix=".xml",
+    delete=False,
+    encoding="utf-8"
+) as f:
+    f.write(self.xml_string)
+    xml_path = f.name
+
+self.model = load_model_from_path(xml_path)
+```
+
+This patch was necessary because, on the Windows setup used for this project, `load_model_from_xml()` failed when loading the dynamically generated Safety Gym model, whereas `load_model_from_path()` worked correctly.
+
+The modification only affects the model-loading procedure and does not intentionally alter the environment dynamics, observations, rewards, costs, or task definition.
 ## Environment Reproduction
 
 The project uses an old RL stack:

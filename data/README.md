@@ -1,6 +1,6 @@
 # Data Artifacts
 
-This folder contains intermediate artifacts used to reproduce the proposed method.
+This folder contains the datasets used to train and test the switching classifier, moreover it contains also the pools of episodes used to generate the respective datasets.
 
 ## Contents
 

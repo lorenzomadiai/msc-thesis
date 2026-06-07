@@ -530,12 +530,8 @@ def collect_dataset(
             print(
                 f"  [sampling {i:4d}/{len(seeds)}] "
                 f"cons_success={int(ep_info['cons_success'])} "
-                f"mode={ep_info['sampling_mode_used']} "
-                f"k*={ep_info['best_k']} "
-                f"sampled_ks={ep_info['sampled_ks']} "
-                f"forced_ks={ep_info['forced_ks']} "
-                f"forced_success_ks={ep_info['forced_success_ks']} "
-                f"kept={len(ep_samples)}"
+                f"k_best={ep_info['best_k']} "
+                f"sampled_timesteps={ep_info['sampled_ks']} "
             )
             if print_datapoints:
                 for dp in ep_info["datapoints"]:

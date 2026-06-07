@@ -95,7 +95,7 @@ This folder contains the proposed hierarchical switching method.
 
 - `utils/` contains dataset sampling, train/validation/test splitting, evaluation, and training utilities.
 
-- `ablation/` contains scripts for analysing classifier quality, switch timing, oracle behaviour, and per-episode switching probability.
+- `evaluation/` contains scripts for analysing classifier quality, switch timing, oracle behaviour, and per-episode switching probability.
 
 ### `code/experiments`
 
@@ -713,12 +713,12 @@ python .\code\experiments\exp2_time_vs_risk_analysis\plotting\plot_results_over_
   --out_dir .\results\figures\exp2_time_vs_risk_analysis
 ```
 
-## Classifier Ablation and Diagnostics
+## Classifier Evaluation and Diagnostics
 
 ### Classifier Quality
 
 ```powershell
-python .\code\proposed_method\ablation\evaluate_switch_classifier_quality.py `
+python .\code\proposed_method\evaluation\evaluate_switch_classifier_quality.py `
   --model_ckpt .\models\switching_classifier\switching_model.pt `
   --dataset_npz .\data\datasets\test_set\test_set_cached.npz `
   --config_json .\models\switching_classifier\config.json `
@@ -731,7 +731,7 @@ python .\code\proposed_method\ablation\evaluate_switch_classifier_quality.py `
 ### Switch Timing
 
 ```powershell
-python .\code\proposed_method\ablation\evaluate_switch_classifier_timing.py `
+python .\code\proposed_method\evaluation\evaluate_switch_classifier_timing.py `
   --model_ckpt .\models\switching_classifier\switching_model.pt `
   --episode_pool_csv .\data\pools_of_episodes\for_testing\pool_500ep_for_testing.csv `
   --cons_dir .\models\conservative_policy `
@@ -749,7 +749,7 @@ python .\code\proposed_method\ablation\evaluate_switch_classifier_timing.py `
 ### Switch-Timing Plots
 
 ```powershell
-python .\code\proposed_method\ablation\plot_switch_k_validation.py `
+python .\code\proposed_method\evaluation\plot_switch_k_validation.py `
   --per_episode_csv .\results\tables\classifier_evaluation\switch_timing\k_compare_per_episode_eval.csv `
   --summary_csv .\results\tables\classifier_evaluation\switch_timing\k_compare_summary_eval.csv `
   --out_dir .\results\figures\classifier_evaluation\switch_timing

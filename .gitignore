@@ -1,23 +1,4 @@
 
-/safety-gymnasium
 **/__pycache__/
-/safety-gym
-/WCSAC/wc_sac.egg-info
-/WCSAC/LICENSE
-/WCSAC/README.md
-/WCSAC/setup.py
-/WCSAC/wc_sac/__pycache__
-/WCSAC/wc_sac/utils
-/WCSAC/wc_sac/__init__.py
-/WCSAC/wc_sac/LICENSE
-/WCSAC/wc_sac/LICENSE
-/WCSAC/wc_sac/sac/.runs
-/WCSAC/wc_sac/sac/__init__.py
-/WCSAC/wc_sac/sac/LICENSE
-/WCSAC/wc_sac/sac/readme.md
 /results/other
 /models/other
-
-/runs_meta
-/resultslore
-/WCSAC

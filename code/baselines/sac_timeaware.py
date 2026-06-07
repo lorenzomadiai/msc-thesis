@@ -78,52 +78,6 @@ safe_register(
     kwargs={'config': config2}
 )
 
-config3 = {
-    'placements_extents': [-3.5, -3.5, 3.5, 3.5],
-    'robot_base': 'xmls/point.xml',
-    'task': 'goal',
-    "robot_locations": [(-2.5, -2.5)],
-    'goal_size': 0.3,
-    'goal_keepout': 0.305,
-    'goal_locations': [(2.5, 2.5)],
-    'observe_goal_lidar': True,
-    'observe_hazards': True,
-    'constrain_hazards': True,
-    'lidar_max_dist': 5,
-    'lidar_num_bins': 16,
-    'hazards_num': 7,
-    'hazards_size': 0.45,
-    'hazards_keepout': 0.505,
-}
-
-safe_register(
-    id='MyThesisStaticEnv-v0',
-    entry_point='safety_gym.envs.mujoco:Engine',
-    kwargs={'config': config3},
-)
-
-config4 = {
-    'placements_extents': [-2.5, -2.5, 2.5, 2.5],
-    'robot_base': 'xmls/point.xml',
-    'task': 'goal',
-    'goal_size': 0.3,
-    'goal_keepout': 0.305,
-    'continue_goal': False,
-    'observe_goal_lidar': True,
-    'observe_hazards': True,
-    'constrain_hazards': True,
-    'lidar_max_dist': 5,
-    'lidar_num_bins': 16,
-    'hazards_num': 7,
-    'hazards_size': 0.45,
-    'hazards_keepout': 0.505,
-}
-
-safe_register(
-    id='MyThesisDynamicEnv-v0',
-    entry_point='safety_gym.envs.mujoco:Engine',
-    kwargs={'config': config4},
-)
 
 # -------------------- TF UTILS --------------------
 def placeholder(dim=None):
@@ -498,7 +452,7 @@ if __name__ == '__main__':
     parser.add_argument('--fixed_entropy_bonus', default=None, type=float)
     parser.add_argument('--entropy_constraint', type=float, default=-1)
 
-    parser.add_argument('--logger_kwargs_str', type=json.loads, default='{"output_dir": "./data"}')
+    parser.add_argument('--logger_kwargs_str', type=json.loads, default='{"output_dir": "./runs"}')
 
     # time wrapper
     parser.add_argument('--use_time_wrapper', action='store_true')

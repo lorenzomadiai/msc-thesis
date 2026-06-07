@@ -23,7 +23,6 @@ from safety_gym.envs.engine import Engine
 from gym.envs.registration import register, registry
 from scipy.stats import norm
 
-
 from utils.wrappers import TimeBudgetWrapper
 import sys
 EPS = 1e-8
@@ -78,32 +77,6 @@ safe_register(
          id='DynamicEnv-v0',
          entry_point='safety_gym.envs.mujoco:Engine',
          kwargs={'config': config2})
-
-config4 = {
-        'placements_extents': [-1.5, -1.5, 1.5, 1.5],
-        'goal_locations': [(1.1, 1.1)],
-
-        "robot_placements": [(-1.5, -1.5, -0.5, -0.5)],
-
-        'robot_base': 'xmls/point.xml',
-        'task': 'goal',
-        'continue_goal': False,
-        'goal_size': 0.3,
-        'goal_keepout': 0.305,
-        'observe_goal_lidar': True,
-        'observe_hazards': True,
-        'constrain_hazards': True,
-        'lidar_max_dist': 3,
-        'lidar_num_bins': 16,
-        'hazards_num': 3,
-        'hazards_size': 0.3,
-        'hazards_keepout': 0.305
-        }
-safe_register(
-    id='MyThesisDynamicEnv-v0',
-    entry_point='safety_gym.envs.mujoco:Engine',
-    kwargs={'config': config4},
-)
 
 
 def placeholder(dim=None):
@@ -777,7 +750,7 @@ if __name__ == '__main__':
     parser.add_argument('--cost_lim', type=float, default=None)
     parser.add_argument('--lr_s', type=int, default=50)
     parser.add_argument('--damp_s', type=int, default=10)
-    parser.add_argument('--logger_kwargs_str', type=json.loads, default='{"output_dir": "./data"}')
+    parser.add_argument('--logger_kwargs_str', type=json.loads, default='{"output_dir": "./runs"}')
 
     args = parser.parse_args()
 
